@@ -58,7 +58,7 @@ app.get('/crash-test', () => {
 });
 
 app.use('/cards', require('./routes/cards'));
-
+app.use('/cards/:id', require('./routes/cards'));
 
 app.use((req, res, next) => next(new NotFoundError('Страница не найдена')));
 app.use(errorLogger);
