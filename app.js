@@ -19,7 +19,7 @@ mongoose.set({ runValidators: true });
 mongoose.connect(dbName);
 
 mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB 111');
+  console.log('Connected to MongoDB');
 });
 
 mongoose.connection.on('error', (err) => {
@@ -63,7 +63,6 @@ app.use('/cards/:id', require('./routes/cards'));
 app.use('/blocks', require('./routes/blocks'));
 
 app.use('/items', require('./routes/items'));
-// app.use('/items/:id', require('./routes/items'));
 app.use('/:id/:itemId', require('./routes/items'));
 
 app.use((req, res, next) => next(new NotFoundError('Страница не найдена')));
