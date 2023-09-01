@@ -33,7 +33,7 @@ const itemSchema = new mongoose.Schema({
 
 const dataSchema = new mongoose.Schema({
   id: {
-    type: mongoose.Types.ObjectId,
+    type: Number,
     required: true,
   },
   title: {
