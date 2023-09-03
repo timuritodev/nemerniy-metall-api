@@ -1,3 +1,4 @@
+require('dotenv').config();
 const nodemailer = require('nodemailer');
 const { Contact } = require('../models/contact'); // Import the Contact model
 
@@ -5,10 +6,13 @@ const { Contact } = require('../models/contact'); // Import the Contact model
 const transporter = nodemailer.createTransport({
   service: 'Gmail', // Use the email service you prefer
   auth: {
-    user: 'nemernyimetall@gmail.com', // Your email address
-    pass: 'Qwerty1234$', // Your email password
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
   },
 });
+
+console.log(process.env.EMAIL);
+console.log(process.env.PASSWORD);
 
 module.exports.sendEmail = async (req, res) => {
   try {
@@ -27,10 +31,10 @@ module.exports.sendEmail = async (req, res) => {
 
     // Configure email options
     const mailOptions = {
-      from: email, // Use the sender's email from the request body
+      from: 'nemernyimetall@gmail.com', // Use the sender's email from the request body
       to: 'nemernyimetall@gmail.com', // Specify the recipient's email address
       subject: 'Message from the website',
-      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\n\nMessage:\n${message}`,
+      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\nMessage:\n${message}`,
     };
 
     // Send the email

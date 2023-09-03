@@ -65,7 +65,8 @@ app.use('/blocks', require('./routes/blocks'));
 app.use('/items', require('./routes/items'));
 app.use('/:id/:itemId', require('./routes/items'));
 
-app.use('/sendemail', require('./routes/contacts'));
+const urlencodedParser = express.urlencoded({ extended: false });
+app.use('/sendemail', urlencodedParser, require('./routes/contacts'));
 
 app.use((req, res, next) => next(new NotFoundError('Страница не найдена')));
 app.use(errorLogger);
