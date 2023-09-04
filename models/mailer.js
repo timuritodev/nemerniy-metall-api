@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const contactSchema = new mongoose.Schema({
+const mailerSchema = new mongoose.Schema({
   fio: {
     type: String,
     required: true,
@@ -20,5 +20,5 @@ const contactSchema = new mongoose.Schema({
 });
 
 module.exports = {
-  Contact: mongoose.model('contact', contactSchema),
+  Mailer: mongoose.model('mailer', mailerSchema),
 };

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const { Contact } = require('../models/contact');
+const { Mailer } = require('../models/mailer');
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -10,22 +10,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log(process.env.EMAIL);
-console.log(process.env.PASSWORD);
-
 module.exports.sendEmail = async (req, res) => {
   try {
     const {
       fio, telephone, email, message,
     } = req.body;
 
-    const newContact = new Contact({
+    const newMail = new Mailer({
       fio,
       telephone,
       email,
       message,
     });
-    await newContact.save();
+    await newMail.save();
 
     const mailOptions = {
       from: 'nemernyimetall@gmail.com',
