@@ -1,10 +1,9 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const { Contact } = require('../models/contact'); // Import the Contact model
+const { Contact } = require('../models/contact');
 
-// Create and configure the transporter for sending emails
 const transporter = nodemailer.createTransport({
-  service: 'Gmail', // Use the email service you prefer
+  service: 'Gmail',
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
@@ -20,7 +19,6 @@ module.exports.sendEmail = async (req, res) => {
       fio, telephone, email, message,
     } = req.body;
 
-    // Save the contact details to your database
     const newContact = new Contact({
       fio,
       telephone,
@@ -29,15 +27,13 @@ module.exports.sendEmail = async (req, res) => {
     });
     await newContact.save();
 
-    // Configure email options
     const mailOptions = {
-      from: 'nemernyimetall@gmail.com', // Use the sender's email from the request body
-      to: 'nemernyimetall@gmail.com', // Specify the recipient's email address
+      from: 'nemernyimetall@gmail.com',
+      to: 'nemernyimetall@gmail.com',
       subject: 'Message from the website',
-      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\nMessage:\n${message}`,
+      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\nMessage: ${message}`,
     };
 
-    // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);
