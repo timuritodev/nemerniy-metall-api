@@ -17,6 +17,10 @@ const mailerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  items: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = {

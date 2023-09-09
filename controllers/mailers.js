@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 module.exports.sendEmail = async (req, res) => {
   try {
     const {
-      fio, telephone, email, message,
+      fio, telephone, email, message, items,
     } = req.body;
 
     const newMail = new Mailer({
@@ -21,6 +21,7 @@ module.exports.sendEmail = async (req, res) => {
       telephone,
       email,
       message,
+      items,
     });
     await newMail.save();
 
@@ -28,7 +29,7 @@ module.exports.sendEmail = async (req, res) => {
       from: 'nemernyimetall@gmail.com',
       to: 'nemernyimetall@gmail.com',
       subject: 'Message from the website',
-      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\nMessage: ${message}`,
+      text: `Name: ${fio}\nTelephone: ${telephone}\nEmail: ${email}\nMessage: ${message}\nItems:\n${items}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
