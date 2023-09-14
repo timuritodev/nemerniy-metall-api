@@ -19,7 +19,7 @@ const mailerSchema = new mongoose.Schema({
   },
   items: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
