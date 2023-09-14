@@ -60,10 +60,13 @@ app.get('/crash-test', () => {
 app.use('/cards', require('./routes/cards'));
 app.use('/cards/:id', require('./routes/cards'));
 
+app.use('/allitems', require('./routes/allitems'));
+app.use('/allitems/:id', require('./routes/allitems'));
+
 app.use('/blocks', require('./routes/blocks'));
 
 app.use('/items', require('./routes/items'));
-app.use('/:id/:itemId', require('./routes/items'));
+app.use('/items/:id/:itemId', require('./routes/items')); // ?
 
 app.use('/sendemail', require('./routes/mailers'));
 
