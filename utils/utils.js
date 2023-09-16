@@ -5,6 +5,8 @@ const allowedCors = [
   'http://my-domain.com',
   'localhost:3000',
   'localhost:3001',
+  'http://nemernyi-metall.ru',
+  'https://nemernyi-metall.ru',
 ];
 
 module.exports = {
