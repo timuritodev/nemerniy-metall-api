@@ -1,6 +1,9 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+// const session = require('express-session');
+// const uuid = require('uuid');
 const mongoose = require('mongoose');
+// const MongoStore = require('connect-mongo');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
@@ -11,7 +14,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const rateLimiter = require('./middlewares/rateLimit');
 
-const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
+// const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
+const { PORT = 3002, dbName = 'mongodb://localhost:27017/cardsdb' } = process.env;
 
 const app = express();
 
@@ -51,6 +55,28 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(rateLimiter);
 
+// app.use(session({
+//   secret: 'your-secret-key',
+//   key: 'sid',
+//   // resave: false,
+//   // saveUninitialized: true,
+//   cookie: {
+//     name: 'tim',
+//     value: uuid.v4(),
+//     secure: false, // Установите true, если вы используете HTTPS
+//     maxAge: 7 * 24 * 60 * 60 * 1000,
+//     store: MongoStore.create({
+//       mongoUrl: dbName,
+//     }),
+//   },
+// }));
+
+// app.use((req, res, next) => {
+//   console.log('Session:', req.session);
+//   res.session.save();
+//   next();
+// });
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -69,6 +95,8 @@ app.use('/items', require('./routes/items'));
 app.use('/items/:id/:itemId', require('./routes/items')); // ?
 
 app.use('/sendemail', require('./routes/mailers'));
+
+app.use('/images', require('./routes/images'));
 
 app.use((req, res, next) => next(new NotFoundError('Страница не найдена')));
 app.use(errorLogger);
