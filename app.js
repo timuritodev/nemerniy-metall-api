@@ -14,8 +14,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const rateLimiter = require('./middlewares/rateLimit');
 
-// const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
-const { PORT = 3002, dbName = 'mongodb://localhost:27017/cardsdb' } = process.env;
+const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
+// const { PORT = 3002, dbName = 'mongodb://localhost:27017/cardsdb' } = process.env;
 
 const app = express();
 
