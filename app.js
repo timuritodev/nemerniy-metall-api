@@ -1,9 +1,10 @@
+// const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const express = require('express');
-// const session = require('express-session');
-// const uuid = require('uuid');
+const session = require('express-session');
+const uuid = require('uuid');
 const mongoose = require('mongoose');
-// const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
@@ -14,8 +15,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const rateLimiter = require('./middlewares/rateLimit');
 
-const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
-// const { PORT = 3002, dbName = 'mongodb://localhost:27017/cardsdb' } = process.env;
+// const { PORT = 3002, dbName = 'mongodb://127.0.0.1:27017/cardsdb' } = process.env;
+const { PORT = 3002, dbName = 'mongodb://localhost:27017/cardsdb' } = process.env;
 
 const app = express();
 
@@ -55,27 +56,55 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(rateLimiter);
 
-// app.use(session({
-//   secret: 'your-secret-key',
-//   key: 'sid',
-//   // resave: false,
-//   // saveUninitialized: true,
-//   cookie: {
-//     name: 'tim',
-//     value: uuid.v4(),
-//     secure: false, // Установите true, если вы используете HTTPS
-//     maxAge: 7 * 24 * 60 * 60 * 1000,
-//     store: MongoStore.create({
-//       mongoUrl: dbName,
-//     }),
-//   },
-// }));
+// const url = 'mongodb://127.0.0.1:27017/';
+// const mongoClient = new MongoClient(url);
 
-// app.use((req, res, next) => {
-//   console.log('Session:', req.session);
-//   res.session.save();
-//   next();
-// });
+// async function run() {
+//   try {
+//     await mongoClient.connect();
+//     const db = mongoClient.db('cardsdb');
+//     const collection = db.collection('sessions');
+//     const data = { name: 'Tom', age: 28 };
+//     const result = await collection.insertOne(data);
+//     console.log(result);
+//     console.log(data);
+//   } catch (err) {
+//     console.log(err);
+//   } finally {
+//     await mongoClient.close();
+//   }
+// }
+
+app.use(session({
+  secret: 'your-secret-key',
+  key: 'sida',
+  resave: true,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: 'mongodb://localhost:27017/cardsdb',
+  }),
+  cookie: {
+    name: 'tim',
+    id: uuid.v4(),
+    value: uuid.v4(),
+    secure: false, // Установите true, если вы используете HTTPS
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/',
+  },
+}));
+
+app.use((req, res, next) => {
+  console.log('Session:', req.session);
+  console.log('id: ', req.session.cookie.id);
+  console.log('value:', req.session.cookie.value);
+  console.log('name:', req.session.name);
+  console.log('sid:', req.session.store);
+  console.log('sid:', req.session.cookie.store);
+  // run().catch(console.error);
+  // res.session.save();
+
+  next();
+});
 
 app.get('/crash-test', () => {
   setTimeout(() => {
